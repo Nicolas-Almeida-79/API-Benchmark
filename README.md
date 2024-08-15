@@ -1,7 +1,7 @@
 # Documentação
 
 ## Introdução
-Esta API foi desenvolvida para gerenciar informações sobre CPUs e GPUs. Abaixo estará descrito como executar a API, as rotas disponíveis, os parâmetros esperados, e as respostas fornecidas pela API.
+Esta API foi desenvolvida com o framework Lumen para gerenciar informações sobre CPUs e GPUs. Abaixo estará descrito como executar a API, as rotas disponíveis, os parâmetros esperados, e as respostas fornecidas pela API.
 
 ## Requisitos
 
