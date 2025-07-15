@@ -211,6 +211,115 @@ X-API-KEY: keySecreta
 - **Cabeçalhos:**
   - `X-API-KEY: keySecreta`
 
-## Postman
-As rotas da API podem ser acessadas diretamente no Postman através do link abaixo:
+### 3. Comparação de Hardware
+
+#### Comparar dois hardwares
+- **Rota:** `POST /compare`
+- **Cabeçalhos:**
+  - `Content-Type: application/json`
+- **Exemplo de requisição (CPU):**
+  ```json
+  {
+    "type": "cpu",
+    "hardware1": "Ryzen 5 3600",
+    "hardware2": "Intel Core i5-10600K"
+  }
+  ```
+- **Exemplo de requisição (GPU):**
+  ```json
+  {
+    "type": "gpu",
+    "hardware1": "RTX 3080",
+    "hardware2": "RX 6800 XT"
+  }
+  ```
+- **Resposta de sucesso (exemplo para CPU):**
+  ```json
+  {
+    "success": true,
+    "type": "cpu",
+    "hardware1": {
+      "id": 1,
+      "model": "Ryzen 5 3600",
+      "fabricante": "AMD",
+      "arquitetura": "Zen 2",
+      "cores": 6,
+      "threads": 12,
+      "clock": 3.6,
+      "boost": 4.2,
+      "integrated_graphics": null,
+      "created_at": "2024-08-14T13:25:02.000000Z",
+      "updated_at": "2024-08-14T13:25:02.000000Z"
+    },
+    "hardware2": {
+      "id": 2,
+      "model": "Intel Core i5-10600K",
+      "fabricante": "Intel",
+      "arquitetura": "Comet Lake",
+      "cores": 6,
+      "threads": 12,
+      "clock": 4.1,
+      "boost": 4.8,
+      "integrated_graphics": "UHD Graphics 630",
+      "created_at": "2024-08-14T13:25:02.000000Z",
+      "updated_at": "2024-08-14T13:25:02.000000Z"
+    },
+    "comparison": {
+      "winner": "hardware2",
+      "is_technical_tie": false,
+      "winner_confidence": 12.5,
+      "score1": 42.5,
+      "score2": 55.0,
+      "differences": [
+        {
+          "characteristic": "Clock Base (GHz)",
+          "hardware1_value": 3.6,
+          "hardware2_value": 4.1,
+          "advantage": "hardware2",
+          "significance": 12
+        },
+        {
+          "characteristic": "Clock de Boost (GHz)",
+          "hardware1_value": 4.2,
+          "hardware2_value": 4.8,
+          "advantage": "hardware2",
+          "significance": 13
+        }
+      ],
+      "specs": [
+        {"name": "Modelo", "value1": "Ryzen 5 3600", "value2": "Intel Core i5-10600K", "better": "hardware2"},
+        {"name": "Clock Base (GHz)", "value1": 3.6, "value2": 4.1, "better": "hardware2"},
+        {"name": "Clock de Boost (GHz)", "value1": 4.2, "value2": 4.8, "better": "hardware2"},
+        {"name": "Núcleos", "value1": 6, "value2": 6, "better": "equal"},
+        {"name": "Threads", "value1": 12, "value2": 12, "better": "equal"}
+      ],
+      "message": "O hardware2 tem um desempenho ligeiramente melhor que o hardware1."
+    }
+  }
+  ```
+- **Possíveis códigos de erro:**
+  - `400`: Requisição inválida (parâmetros ausentes ou inválidos)
+  - `404`: Hardware não encontrado
+  - `422`: Erro de validação
+
+## Códigos de Resposta
+
+A API utiliza os seguintes códigos de status HTTP:
+
+| Código | Descrição |
+|--------|-----------|
+| 200 | OK - Requisição bem-sucedida |
+| 201 | Criado - Recurso criado com sucesso |
+| 400 | Requisição inválida - Verifique os parâmetros fornecidos |
+| 401 | Não autorizado - Chave de API inválida ou ausente |
+| 404 | Não encontrado - O recurso solicitado não existe |
+| 405 | Método não permitido - O método HTTP não é suportado para este endpoint |
+| 422 | Entidade não processável - Erro de validação nos dados fornecidos |
+| 500 | Erro interno do servidor - Ocorreu um erro inesperado |
+
+Para facilitar os testes, você pode importar a coleção do Postman com todos os endpoints através do link abaixo:
+
+[![Executar no Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/SEU_ID_DA_COLECAO?action=collection%2Fimport)
+
+Ou acesse o workspace diretamente:
 [Postman Workspace](https://www.postman.com/nicolas018/workspace/api-benchmark/overview)
