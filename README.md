@@ -317,6 +317,8 @@ A API utiliza os seguintes códigos de status HTTP:
 | 422 | Entidade não processável - Erro de validação nos dados fornecidos |
 | 500 | Erro interno do servidor - Ocorreu um erro inesperado |
 
+## Postman
+
 Para facilitar os testes, você pode importar a coleção do Postman com todos os endpoints através do link abaixo:
 
 [![Executar no Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/SEU_ID_DA_COLECAO?action=collection%2Fimport)

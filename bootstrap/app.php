@@ -9,6 +9,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 
 /*
+|
 |--------------------------------------------------------------------------
 | Create The Application
 |--------------------------------------------------------------------------
@@ -23,11 +24,12 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
+$app->withFacades();
 
 $app->withEloquent();
 
 /*
+|
 |--------------------------------------------------------------------------
 | Register Container Bindings
 |--------------------------------------------------------------------------
@@ -49,6 +51,7 @@ $app->singleton(
 );
 
 /*
+|
 |--------------------------------------------------------------------------
 | Register Config Files
 |--------------------------------------------------------------------------
@@ -62,6 +65,7 @@ $app->singleton(
 $app->configure('app');
 
 /*
+|
 |--------------------------------------------------------------------------
 | Register Middleware
 |--------------------------------------------------------------------------
@@ -73,7 +77,8 @@ $app->configure('app');
 */
 
 $app->middleware([
-    App\Http\Middleware\ExampleMiddleware::class
+    App\Http\Middleware\ExampleMiddleware::class,
+    App\Http\Middleware\CorsMiddleware::class
 ]);
 
 // $app->routeMiddleware([
@@ -86,6 +91,7 @@ $app->routeMiddleware([
 
 
 /*
+|
 |--------------------------------------------------------------------------
 | Register Service Providers
 |--------------------------------------------------------------------------
@@ -101,6 +107,7 @@ $app->routeMiddleware([
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*
+|
 |--------------------------------------------------------------------------
 | Load The Application Routes
 |--------------------------------------------------------------------------
