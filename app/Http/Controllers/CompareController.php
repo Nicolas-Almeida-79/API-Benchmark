@@ -203,9 +203,9 @@ class CompareController extends Controller
         
         switch ($winner) {
             case 'hardware1':
-                return "O primeiro hardware tem melhor desempenho geral. Considere este modelo para um melhor desempenho em jogos e aplicações pesadas.";
+                return "O primeiro hardware tem melhor desempenho geral.";
             case 'hardware2':
-                return "O segundo hardware tem melhor desempenho geral. Este modelo oferece melhor custo-benefício para a maioria dos usuários.";
+                return "O segundo hardware tem melhor desempenho geral.";
                 return "O segundo hardware tem melhor desempenho geral.";
             default:
                 return "As peças têm desempenho equivalente.";
