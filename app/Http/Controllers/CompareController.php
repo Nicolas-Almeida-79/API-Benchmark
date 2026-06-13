@@ -212,51 +212,51 @@ class CompareController extends Controller
         }
     }
     
-    private function compareArchitecture($cpu1, $cpu2, &$score1, &$score2, &$differences)
-    {
-        // Se não houver informação de arquitetura, não faz nada
-        if (empty($cpu1->architecture) || empty($cpu2->architecture)) {
-            return;
-        }
+    // private function compareArchitecture($cpu1, $cpu2, &$score1, &$score2, &$differences)
+    // {
+    //     // Se não houver informação de arquitetura, não faz nada
+    //     if (empty($cpu1->architecture) || empty($cpu2->architecture)) {
+    //         return;
+    //     }
         
-        $arch1 = strtolower(trim($cpu1->architecture));
-        $arch2 = strtolower(trim($cpu2->architecture));
+    //     $arch1 = strtolower(trim($cpu1->architecture));
+    //     $arch2 = strtolower(trim($cpu2->architecture));
         
-        // Se as arquiteturas forem iguais, não precisa ajustar
-        if ($arch1 === $arch2) {
-            return;
-        }
+    //     // Se as arquiteturas forem iguais, não precisa ajustar
+    //     if ($arch1 === $arch2) {
+    //         return;
+    //     }
         
-        // Tenta extrair números de geração (ex: "i7-10700K" -> 10, "Ryzen 5 3600" -> 3)
-        $gen1 = $this->extractGeneration($arch1, $cpu1->model);
-        $gen2 = $this->extractGeneration($arch2, $cpu2->model);
+    //     // Tenta extrair números de geração (ex: "i7-10700K" -> 10, "Ryzen 5 3600" -> 3)
+    //     $gen1 = $this->extractGeneration($arch1, $cpu1->model);
+    //     $gen2 = $this->extractGeneration($arch2, $cpu2->model);
         
-        // Se conseguiu extrair as gerações e são diferentes
-        if ($gen1 !== null && $gen2 !== null && $gen1 != $gen2) {
-            $genDifference = $gen1 - $gen2;
-            $weight = 2.0; // Peso para diferença de geração
+    //     // Se conseguiu extrair as gerações e são diferentes
+    //     if ($gen1 !== null && $gen2 !== null && $gen1 != $gen2) {
+    //         $genDifference = $gen1 - $gen2;
+    //         $weight = 2.0; // Peso para diferença de geração
             
-            if ($genDifference > 0) {
-                $score1 += $weight * min($genDifference, 3); // Limita o bônus a 3 gerações
-                $differences[] = [
-                    'characteristic' => 'Geração/Arquitetura',
-                    'hardware1_value' => $arch1 . ' (Gen ' . $gen1 . ')' ,
-                    'hardware2_value' => $arch2 . ' (Gen ' . $gen2 . ')',
-                    'advantage' => 'hardware1',
-                    'significance' => min($genDifference * 15, 50) // Até 50% de significância
-                ];
-            } else {
-                $score2 += $weight * min(abs($genDifference), 3);
-                $differences[] = [
-                    'characteristic' => 'Geração/Arquitetura',
-                    'hardware1_value' => $arch1 . ' (Gen ' . $gen1 . ')' ,
-                    'hardware2_value' => $arch2 . ' (Gen ' . $gen2 . ')',
-                    'advantage' => 'hardware2',
-                    'significance' => min(abs($genDifference) * 15, 50)
-                ];
-            }
-        }
-    }
+    //         if ($genDifference > 0) {
+    //             $score1 += $weight * min($genDifference, 3); // Limita o bônus a 3 gerações
+    //             $differences[] = [
+    //                 'characteristic' => 'Geração/Arquitetura',
+    //                 'hardware1_value' => $arch1 . ' (Gen ' . $gen1 . ')' ,
+    //                 'hardware2_value' => $arch2 . ' (Gen ' . $gen2 . ')',
+    //                 'advantage' => 'hardware1',
+    //                 'significance' => min($genDifference * 15, 50) // Até 50% de significância
+    //             ];
+    //         } else {
+    //             $score2 += $weight * min(abs($genDifference), 3);
+    //             $differences[] = [
+    //                 'characteristic' => 'Geração/Arquitetura',
+    //                 'hardware1_value' => $arch1 . ' (Gen ' . $gen1 . ')' ,
+    //                 'hardware2_value' => $arch2 . ' (Gen ' . $gen2 . ')',
+    //                 'advantage' => 'hardware2',
+    //                 'significance' => min(abs($genDifference) * 15, 50)
+    //             ];
+    //         }
+    //     }
+    // }
     
     /**
      * Extrai o número da geração a partir da arquitetura ou modelo da CPU
