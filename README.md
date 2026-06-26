@@ -302,6 +302,222 @@ X-API-KEY: keySecreta
   - `404`: Hardware não encontrado
   - `422`: Erro de validação
 
+### 4. Jogos
+
+Permite gerenciar o catálogo de jogos e seus respectivos requisitos mínimos e recomendados.
+
+#### Listar todos os jogos
+- **Rota:** `GET /games`
+- **Resposta:**
+    ```json
+    [
+      {
+        "id": 1,
+        "nome": "Cyberpunk 2077",
+        "cpu_recomendada": "Core i7-4790",
+        "ram_recomendada": "12 GB",
+        "gpu_recomendada": "GTX 1060 6GB",
+        "cpu_minima": "Core i5-3570K",
+        "ram_minima": "8 GB",
+        "gpu_minima": "GTX 780 3GB",
+        "ano_lancamento": 2020,
+        "desenvolvedora": "CD Projekt Red",
+        "genero": "RPG"
+      }
+    ]
+    ```
+
+#### Consultar um jogo específico
+- **Rota:** `GET /games/{id}`
+- **Parâmetros de Rota:**
+  - `{id}`: ID do jogo (ex.: `1`).
+- **Resposta:**
+    ```json
+    {
+      "id": 1,
+      "nome": "Cyberpunk 2077",
+      "cpu_recomendada": "Core i7-4790",
+      "ram_recomendada": "12 GB",
+      "gpu_recomendada": "GTX 1060 6GB",
+      "cpu_minima": "Core i5-3570K",
+      "ram_minima": "8 GB",
+      "gpu_minima": "GTX 780 3GB",
+      "ano_lancamento": 2020,
+      "desenvolvedora": "CD Projekt Red",
+      "genero": "RPG"
+    }
+    ```
+
+#### Adicionar um novo jogo
+- **Rota:** `POST /games`
+- **Cabeçalhos:**
+  - `Content-Type: application/json`
+  - `X-API-KEY: keySecreta`
+- **Exemplo de requisição:**
+  ```json
+  {
+      "nome": "Cyberpunk 2077",
+      "ano_lancamento": 2020,
+      "desenvolvedora": "CD Projekt Red",
+      "genero": "RPG",
+      "min_cpu": "Core i5-3570K",
+      "min_ram": "8 GB",
+      "min_gpu": "GTX 780 3GB",
+      "rec_cpu": "Core i7-4790",
+      "rec_ram": "12 GB",
+      "rec_gpu": "GTX 1060 6GB"
+  }
+  ```
+
+#### Atualizar um jogo
+- **Rota:** `PUT /games/{id}`
+- **Parâmetros de Rota:**
+  - `{id}`: ID do jogo (ex.: `1`).
+- **Cabeçalhos:**
+  - `Content-Type: application/json`
+  - `X-API-KEY: keySecreta`
+- **Exemplo de requisição:**
+  ```json
+  {
+      "ano_lancamento": 2021,
+      "rec_ram": "16 GB"
+  }
+  ```
+
+#### Deletar um jogo
+- **Rota:** `DELETE /games/{id}`
+- **Parâmetros de Rota:**
+  - `{id}`: ID do jogo (ex.: `1`).
+- **Cabeçalhos:**
+  - `X-API-KEY: keySecreta`
+
+### 5. Benchmarks
+
+Permite registrar e consultar benchmarks reais (FPS médio obtido com hardwares específicos rodando jogos específicos).
+
+#### Listar todos os benchmarks
+- **Rota:** `GET /benchmarks`
+- **Resposta:**
+    ```json
+    [
+      {
+        "id": 1,
+        "jogo": "Cyberpunk 2077",
+        "cpu": "Ryzen 5 3600",
+        "gpu": "RTX 3080",
+        "ram": "16GB DDR4",
+        "configuracao": "Ultra 1080p",
+        "fps_medio": 85,
+        "created_at": "2024-08-14T13:25:02.000000Z",
+        "updated_at": "2024-08-14T13:25:02.000000Z"
+      }
+    ]
+    ```
+
+#### Consultar um benchmark específico
+- **Rota:** `GET /benchmarks/{id}`
+- **Parâmetros de Rota:**
+  - `{id}`: ID do benchmark (ex.: `1`).
+- **Resposta:**
+    ```json
+    {
+      "id": 1,
+      "jogo": "Cyberpunk 2077",
+      "cpu": "Ryzen 5 3600",
+      "gpu": "RTX 3080",
+      "ram": "16GB DDR4",
+      "configuracao": "Ultra 1080p",
+      "fps_medio": 85,
+      "created_at": "2024-08-14T13:25:02.000000Z",
+      "updated_at": "2024-08-14T13:25:02.000000Z"
+    }
+    ```
+
+#### Registrar um novo benchmark
+- **Rota:** `POST /benchmarks`
+- **Cabeçalhos:**
+  - `Content-Type: application/json`
+  - `X-API-KEY: keySecreta`
+- **Exemplo de requisição:**
+  ```json
+  {
+      "jogo": "Cyberpunk 2077",
+      "cpu": "Ryzen 5 3600",
+      "gpu": "RTX 3080",
+      "ram": "16GB DDR4",
+      "configuracao": "Ultra 1080p",
+      "fps_medio": 85
+  }
+  ```
+
+#### Atualizar um benchmark
+- **Rota:** `PUT /benchmarks/{id}`
+- **Parâmetros de Rota:**
+  - `{id}`: ID do benchmark (ex.: `1`).
+- **Cabeçalhos:**
+  - `Content-Type: application/json`
+  - `X-API-KEY: keySecreta`
+- **Exemplo de requisição:**
+  ```json
+  {
+      "fps_medio": 90,
+      "configuracao": "Ultra 1080p (DLSS Quality)"
+  }
+  ```
+
+#### Deletar um benchmark
+- **Rota:** `DELETE /benchmarks/{id}`
+- **Parâmetros de Rota:**
+  - `{id}`: ID do benchmark (ex.: `1`).
+- **Cabeçalhos:**
+  - `X-API-KEY: keySecreta`
+
+
+## Algoritmo de Comparação e Funcionamento do Benchmark
+
+O funcionamento central do comparador/benchmark baseia-se em um algoritmo de pontuação técnica por pesos dinâmicos que avalia se o hardware selecionado pelo usuário atende ou supera as especificações exigidas pelos jogos.
+
+### 1. Pesos de CPU
+Na comparação de processadores (CPU do usuário vs CPU do jogo), os seguintes atributos são avaliados com seus respectivos pesos originais:
+- **Núcleos (Cores):** Peso `4.0` (Maior impacto multi-tarefa e arquiteturas modernas)
+- **Threads:** Peso `3.5` (Impacto no paralelismo de execução)
+- **Clock de Boost (GHz):** Peso `3.0` (Desempenho máximo em pico de uso)
+- **Clock Base (GHz):** Peso `2.5` (Desempenho sustentado mínimo)
+
+### 2. Pesos de GPU
+Na comparação de placas de vídeo (GPU do usuário vs GPU do jogo), os seguintes atributos são avaliados:
+- **Cores de Processamento (CUDA Cores / Stream Processors):** Peso `3.5` (Poder de processamento bruto)
+- **Memória VRAM (MB):** Peso `3.0` (Capacidade de armazenamento de texturas e buffers)
+- **Clock de Boost (MHz):** Peso `2.5` (Clock dinâmico em carga de trabalho)
+- **Clock Base (MHz):** Peso `2.0` (Frequência mínima de operação)
+
+### 3. Ajuste Dinâmico de Peso (Dynamic Weighting)
+Para que diferenças significativas de especificação tenham maior relevância do que pequenas variações, o algoritmo ajusta o peso de cada característica dinamicamente com base na diferença percentual entre as duas peças de hardware:
+
+$$ \text{Peso Dinâmico} = \text{Peso Original} \times \left(1 + \min\left(\frac{\text{Diferença Percentual}}{20}, 1\right)\right) $$
+
+*Exemplo:* Se a CPU do usuário tem $10\%$ a mais de clock de boost que a CPU requerida pelo jogo, o peso desse clock sobe de $3.0$ para $3.0 \times (1 + 0.5) = 4.5$. O acréscimo máximo de peso é de $+100\%$ (quando a diferença é de $20\%$ ou mais).
+
+### 4. Confiança do Vencedor (Winner Confidence)
+Ao final do acúmulo de pontuações de cada especificação, a diferença de pontuação final determina a margem de vitória em termos percentuais:
+
+$$ \text{Confiança} = \left(\frac{|\text{Score}_1 - \text{Score}_2|}{\text{Pontuação Máxima Possível}}\right) \times 100 $$
+
+- **Empate Técnico (Technical Tie):** Se a confiança calculada for **menor que 5%**, o resultado é um empate técnico (`is_technical_tie = true`). Significa que a diferença de desempenho prático em jogos é insignificante, indicando que o hardware do usuário atenderá perfeitamente aos requisitos mesmo que tenha alguma especificação ligeiramente inferior.
+- **Vitória de Hardware:** Se a diferença for de **5% ou mais**, a peça com maior pontuação é declarada vencedora (`hardware1` para o hardware do usuário, `hardware2` para o requisito do jogo).
+
+### 5. Comparação de Memória RAM
+A memória RAM é comparada localmente de forma binária com base em sua capacidade em Gigabytes:
+- Se $\text{Capacidade do Usuário} \geq \text{Capacidade Requerida}$, o requisito é atendido (`true`).
+- Caso contrário, o requisito não é atendido (`false`).
+
+### 6. Fluxo de Execução do Benchmark no Sistema
+1. **Seleção:** O usuário escolhe no frontend um Jogo, sua CPU, GPU e RAM.
+2. **Requisitos:** O frontend busca as especificações de hardware correspondentes à CPU e GPU requeridas pelo jogo (Mínimas e Recomendadas).
+3. **Chamada Paralela à API:** O frontend envia requisições assíncronas para `/compare` enviando a CPU e GPU do usuário contra os requisitos correspondentes do jogo.
+4. **Decisão:** Se o hardware do usuário vencer ou empatar tecnicamente em todas as três categorias (CPU, GPU e RAM), o sistema sinaliza que o PC do usuário **atende** aos requisitos (seja mínimos ou recomendados). Caso contrário, avisa que não atende.
+
+
 ## Códigos de Resposta
 
 A API utiliza os seguintes códigos de status HTTP:
