@@ -18,6 +18,11 @@ $router->group(['middleware' => 'auth.apikey'], function () use ($router) {
     $router->post('/games', 'GameController@store');
     $router->put('/games/{id}', 'GameController@update');
     $router->delete('/games/{id}', 'GameController@destroy');
+    
+    // Rotas para Benchmarks
+    $router->post('/benchmarks', 'BenchmarkController@store');
+    $router->put('/benchmarks/{id}', 'BenchmarkController@update');
+    $router->delete('/benchmarks/{id}', 'BenchmarkController@destroy');
 });
 
 // Rotas públicas para CPUs
@@ -32,6 +37,10 @@ $router->get('/gpus/{model}', 'GpuController@show');
 $router->get('/games', 'GameController@index');
 $router->get('/games/{id}', 'GameController@show');
 
+// Rotas públicas para Benchmarks
+$router->get('/benchmarks', 'BenchmarkController@index');
+$router->get('/benchmarks/{id}', 'BenchmarkController@show');
+
 // Rota para comparação de hardware
 $router->post('/compare', 'CompareController@compareHardware');
 
@@ -44,6 +53,7 @@ $router->get('/', function () use ($router) {
             'cpus' => ['GET /cpus', 'GET /cpus/{model}'],
             'gpus' => ['GET /gpus', 'GET /gpus/{model}'],
             'games' => ['GET /games', 'GET /games/{id}'],
+            'benchmarks' => ['GET /benchmarks', 'GET /benchmarks/{id}', 'POST /benchmarks', 'PUT /benchmarks/{id}', 'DELETE /benchmarks/{id}'],
             'compare' => ['POST /compare']
         ]
     ]);
